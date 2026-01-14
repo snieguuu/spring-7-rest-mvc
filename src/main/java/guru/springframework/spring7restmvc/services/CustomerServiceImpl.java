@@ -51,6 +51,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
+    public void updatePatchCustomerById(UUID customerId, Customer customer) {
+        Customer existing = customerMap.get(customerId);
+        if (!customer.getName().isEmpty()) {
+            existing.setName(customer.getName());
+        }
+    }
+
+    @Override
     public void updateCustomerById(UUID customerId, Customer customer) {
         Customer existing = customerMap.get(customerId);
         existing.setName(customer.getName());
