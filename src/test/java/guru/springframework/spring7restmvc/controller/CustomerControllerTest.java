@@ -3,8 +3,10 @@ package guru.springframework.spring7restmvc.controller;
 import guru.springframework.spring7restmvc.model.Customer;
 import guru.springframework.spring7restmvc.services.CustomerService;
 import guru.springframework.spring7restmvc.services.CustomerServiceImpl;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.http.MediaType;
@@ -38,6 +40,21 @@ class CustomerControllerTest {
     @BeforeEach
     void setUp() {
         customerServiceImpl = new CustomerServiceImpl();
+    }
+
+    @Test
+    void testDeleteCustomer() throws Exception {
+
+        Customer customer = customerServiceImpl.getAllCustomers().get(0);
+
+        mockMvc.perform(delete("/api/v1/customer/" + customer.getId())
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent());
+
+        ArgumentCaptor<UUID> argumentCaptor = ArgumentCaptor.forClass(UUID.class);
+
+        verify(customerService).deleteCustomerById(argumentCaptor.capture());
+        Assertions.assertThat(argumentCaptor.getValue()).isEqualTo(customer.getId());
     }
 
     @Test
