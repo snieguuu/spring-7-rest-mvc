@@ -23,12 +23,16 @@ public class CustomerServiceJPA implements CustomerService {
 
     @Override
     public Optional<CustomerDTO> getCustomerById(UUID uuid) {
-        return Optional.empty();
+        return Optional.ofNullable(customerRepository.findById(uuid).orElseGet(() -> null))
+                .map(customerMapper::customerToCustomerDto);
     }
 
     @Override
     public List<CustomerDTO> getAllCustomers() {
-        return null;
+        return customerRepository.findAll()
+                .stream()
+                .map(customerMapper::customerToCustomerDto)
+                .toList();
     }
 
     @Override
