@@ -31,15 +31,19 @@ public class BeerDTO {
     private String beerName;
 
     @JsonProperty("beerStyle")
+    @NotNull
     private BeerStyle beerStyle;
 
     @JsonProperty("upc")
+    @NotBlank
+    @NotNull
     private String upc;
 
     @JsonProperty("quantityOnHand")
     private Integer quantityOnHand;
 
     @JsonProperty("price")
+    @NotNull
     private BigDecimal price;
 
     private LocalDateTime createdDate;
